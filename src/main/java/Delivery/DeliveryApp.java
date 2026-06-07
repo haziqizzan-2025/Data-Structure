@@ -7,6 +7,7 @@ public class DeliveryApp {
     // 1. Initialize your completed DataManager
     private static DataManager db = new DataManager();
     private static Scanner scanner = new Scanner(System.in);
+    private static BST tree = new BST();
 
     public static void main(String[] args) {
         System.out.println("==================================================");
@@ -89,12 +90,26 @@ public class DeliveryApp {
     // 2. Ammar's Module Placeholder
     private static void menuSearchFood() {
         System.out.println("\n-- Search & Recommend Food --");
-        System.out.print("Enter food item to search: ");
+        System.out.print("1. View Full Menu Sorted by Price ");
+        System.out.println("2. Search food item by name");
+        System.out.println("Select action: ");
         String foodQuery = scanner.nextLine();
         
-        System.out.println("[System]: Searching for '" + foodQuery + "'...");
-        // TODO (Ammar): Call your BST search method here. 
-        // Example: bstTree.search(foodQuery);
+        String action = scanner.nextLine();
+        
+        if (action.equals("1")) {
+            System.out.println("\n--- Current Menu (Sorted by Price Lowest -> Highest) ---");
+            tree.inorder(); // Calls your Inorder function!
+        } else if (action.equals("2")) {
+            System.out.print("Enter food item to search: ");
+            foodQuery = scanner.nextLine();
+            System.out.println("[System]: Searching for '" + foodQuery + "'...");
+            
+            // Calls your custom searchByName logic
+            tree.searchByName(tree.root, foodQuery);
+        } else {
+            System.out.println("Invalid option.");
+        }
     }
 
     // 3. Haziq's Module Placeholder
