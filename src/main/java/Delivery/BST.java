@@ -1,70 +1,61 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// BST.java
 package Delivery;
 
-/**
- *
- * @author ammar
- */
 class BST {
     Node root;
     
-    void insert(String foodName, int price){
+    void insert(String foodName, double price) {
         root = insertRec(root, foodName, price);
     }
     
-    Node insertRec(Node node, String foodName, int price){
-        if(node == null){
+    Node insertRec(Node node, String foodName, double price) {
+        if (node == null) {
             return new Node(foodName, price);
-        }else if(price < node.price){
+        }
+        
+        int compareResult = foodName.compareToIgnoreCase(node.foodName);
+        
+        if (compareResult < 0) {
             node.left = insertRec(node.left, foodName, price);
-        }else{
-            node.right  =insertRec(node.right, foodName, price);
+        } else if (compareResult > 0) {
+            node.right = insertRec(node.right, foodName, price);
         }
         return node;
     }
     
-    boolean search(int price){ 
-        return searchRec(root, price);
+    void searchByName(String foodQuery) {
+        System.out.println("[System]: Searching for '" + foodQuery + "'...");
+        searchByNameRec(root, foodQuery);
     }
     
-    boolean searchRec(Node node, int price){
-        if(node == null){
-            return false;
-        }else if(price == node.price){
-            return true;
-        }else if(price < node.price){
-             return searchRec(node.left, price);
-        }else{
-            return searchRec(node.right, price);
+    private void searchByNameRec(Node node, String foodQuery) {
+        if (node == null) {
+            System.out.println("-> Item not found in menu.");
+            return;
+        }
+        
+        int compareResult = foodQuery.compareToIgnoreCase(node.foodName);
+        
+        if (compareResult == 0) {
+            System.out.printf("-> Found: %s | Price: RM %.2f\n", node.foodName, node.price);
+        } else if (compareResult < 0) {
+            searchByNameRec(node.left, foodQuery);
+        } else {
+            searchByNameRec(node.right, foodQuery);
         }
     }
     
-    void searchByName(Node node, String foodQuery) {
+    void inorder() {
+         System.out.println("\n--- Current Menu (Alphabetical Order) ---");
+         inorderRec(root);
+    }
+    
+    void inorderRec(Node node) {
         if (node == null) {
             return;
         }
-        // Checks if the food item name contains your search keyword (case-insensitive)
-        if (node.foodName.toLowerCase().contains(foodQuery.toLowerCase())) {
-            System.out.println("-> Found: " + node.foodName + " | Price: RM " + node.price);
-        }
-        searchByName(node.left, foodQuery);
-        searchByName(node.right, foodQuery);
-    }
-    
-    void inorder(){
-         inorderRec(root);
-         
-    }
-    
-    void inorderRec(Node node){
-        if(node == null){
-            return;
-        }
         inorderRec(node.left);
-        System.out.println(node.foodName + " RM " + node.price);
+        System.out.printf("%s - RM %.2f\n", node.foodName, node.price);
         inorderRec(node.right);
     }
 }
